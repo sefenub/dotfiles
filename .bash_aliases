@@ -1,3 +1,4 @@
+# Yay
 alias xclip='xclip -selection clipboard'
 
 alias recent='uvx recent'
@@ -33,3 +34,6 @@ alias opencode='opencode --agent plan'
 # git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME --local status.showUntrackedFiles no
 
 alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+# On first setup
+# cd $HOME && config checkout
