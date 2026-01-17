@@ -26,14 +26,22 @@ extract () {
 }
 
 alias kb=kubectl
-alias wakecaptain='wakeonlan b4:b0:24:b2:1c:8e'
-alias opencode='opencode --agent plan'
 
-# Created via:
-# git init --bare $HOME/.dotfiles && cd $HOME/.dotfiles && \
-# git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME --local status.showUntrackedFiles no
+alias install='sudo apt-get install'
+alias remove='sudo apt-get remove'
+
+export PATH="$PATH:/opt/nvim-linux64/bin"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH=/home/ali/.opencode/bin:$PATH
+alias opencode='opencode --agent plan'
 
 alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
-# On first setup
-# cd $HOME && config checkout
+# # Pulling dotfiles with git
+# cd $HOME
+# git clone --bare https://github.com/sefenub/dotfiles.git .dotfiles
+# alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+# config config --local status.showUntrackedFiles no
+# config checkout
+# # Checkout will fail unless conflicting files are deleted.
+
