@@ -18,11 +18,21 @@ M.keymaps = function()
   map("v", "<leader>/", "gc", { desc = "Toggle comment", remap = true })
   map("n", "<leader>/", "gcc", { desc = "Toggle comment", remap = true })
 
+  -- Buffer commands
+  map("n", "<leader>bd", "<cmd>bd<cr>", { desc = "Delete buffer" })
+  map("n", "<leader>bn", "<cmd>bn<cr>", { desc = "Next buffer" })
+  map("n", "<leader>bp", "<cmd>bp<cr>", { desc = "Previous buffer" })
+  map("n", "<leader>bb", "<cmd>b#<cr>", { desc = "Alternate buffer" })
+  map("n", "<leader>bl", "<cmd>ls<cr>", { desc = "List buffers" })
+
   -- Terminal toggle handled by toggleterm plugin
 end
 
 -- Custom options
 M.options = function()
+  -- Persist global variables
+  vim.opt.shada:append('!')
+
   -- Prettier diagnostics
   vim.diagnostic.config({
     virtual_text = {

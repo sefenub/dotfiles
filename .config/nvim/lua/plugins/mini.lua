@@ -14,11 +14,11 @@ return {
   },
 
   -- Auto pairs
-  {
-    'echasnovski/mini.pairs',
-    event = 'InsertEnter',
-    opts = {},
-  },
+  -- {
+  --   'echasnovski/mini.pairs',
+  --   event = 'InsertEnter',
+  --   opts = {},
+  -- },
 
 
   -- Surround actions (add, delete, replace surroundings)
