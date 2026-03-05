@@ -5,6 +5,11 @@ set -euo pipefail
 APT_PACKAGES=(
   git curl neovim htop build-essential unzip
   tmux podman xclip google-cloud-cli terraform
+  avahi-daemon wakeonlan fzf ripgrep
+)
+
+CARGO_PACKAGES=(
+  nu
 )
 
 # Helper to check if a command exists
@@ -50,7 +55,7 @@ install_jsstuff() {
 
   # 1. FNM Install
   if ! command_exists fnm; then
-    curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
+    curl -fsSL https://fnm.vercel.app/install | bash -s
   fi
 
   # 2. Load FNM into current session
@@ -59,7 +64,9 @@ install_jsstuff() {
 
   # 3. Handle Node LTS
   echo "Ensuring Node LTS is installed and active..."
-  fnm install --lts
+  if ! fnm list | grep -q "lts-latest" ; then
+    fnm install --lts
+  fi
 
   # 'fnm use' needs the alias name, not the flag
   fnm use lts-latest || fnm default lts-latest
@@ -100,6 +107,20 @@ install_k8s() {
   fi
 }
 
+install_rust() {
+  if ! command_exists rustup; then
+    curl https://sh.rustup.rs -sSf | sh -s -- -y
+  fi
+}
+
+install_cargo_packages() {
+  cargo install --locked "${CARGO_PACKAGES[@]}"
+}
+
+install_golang() {
+  curl -L https://git.io/vQhTU | bash
+}
+
 # These are often wrapper scripts; check if binary exists in local bin
 install_ai_tools() {
   echo "--- Installing AI Tools ---"
@@ -119,7 +140,9 @@ main() {
   install_starship
   install_uv
   install_k8s
-  
+  install_rust
+  install_golang
+
   echo "--- Setup Complete! Please restart your shell. ---"
 }
 
