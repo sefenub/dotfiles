@@ -5,11 +5,16 @@ set -euo pipefail
 APT_PACKAGES=(
   git curl neovim htop build-essential unzip
   tmux podman xclip google-cloud-cli terraform
-  avahi-daemon wakeonlan fzf ripgrep
+  avahi-daemon wakeonlan ripgrep bat taskwarrior
+  fzf
 )
 
 CARGO_PACKAGES=(
   nu
+)
+
+PY_PACKAGE=(
+  tldr
 )
 
 # Helper to check if a command exists
@@ -75,6 +80,7 @@ install_jsstuff() {
   if ! command_exists pnpm; then
     echo "Installing pnpm..."
     npm install -g pnpm
+    pnpm setup
   fi
 
   # 5. Bun
@@ -82,6 +88,10 @@ install_jsstuff() {
     echo "Installing Bun..."
     curl -fsSL https://bun.sh/install | bash
   fi
+}
+
+install_node_packages() {
+  pnpm install -g diff2html-cli
 }
 
 install_starship() {
@@ -96,6 +106,10 @@ install_uv() {
     echo "--- Installing UV ---"
     curl -LsSf https://astral.sh/uv/install.sh | sh
   fi
+}
+
+install_py_packages() {
+  uv tool install tldr
 }
 
 install_k8s() {
@@ -139,6 +153,7 @@ main() {
   install_ai_tools
   install_starship
   install_uv
+  install_py_packages
   install_k8s
   install_rust
   install_golang
