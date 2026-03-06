@@ -25,16 +25,18 @@ extract () {
      fi
 }
 
+eval "$(starship init bash)"
+
 alias kb=kubectl
 
 alias install='sudo apt-get install'
 alias remove='sudo apt-get remove'
 
-export PATH="$PATH:/opt/nvim-linux64/bin"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH=/home/ali/.opencode/bin:$PATH
 
 alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
 
 # # Pulling dotfiles with git
 # cd $HOME
