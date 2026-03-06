@@ -49,23 +49,6 @@ require("lazy").setup({
     { import = "plugins" },
     { "folke/todo-comments.nvim", opts = {} },
     { "folke/which-key.nvim", event = "VeryLazy" },
-    {
-    'nvim-telescope/telescope.nvim', tag = '*',
-    dependencies = {
-        'nvim-lua/plenary.nvim',
-        -- optional but recommended
-        { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-    },
-	config = function()
-	    require('telescope').setup({
-	      pickers = {
-		colorscheme = {
-		  enable_preview = true  -- This enables live preview
-		}
-	      }
-	    })
-	  end,
-}
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.

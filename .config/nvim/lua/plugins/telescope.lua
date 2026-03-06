@@ -5,6 +5,7 @@ return {
   dependencies = {
     'nvim-lua/plenary.nvim',
     'folke/which-key.nvim',
+    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   },
   config = function()
     require('telescope').setup({
@@ -16,8 +17,9 @@ return {
         colorscheme = {
           enable_preview = true,
         }
-      }
+      },
     })
+    require('telescope').load_extension('fzf')
   end,
   keys = {
     { '<leader>ff', '<cmd>Telescope find_files<cr>', desc = 'Find files' },

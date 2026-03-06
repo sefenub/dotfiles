@@ -33,7 +33,6 @@ alias remove='sudo apt-get remove'
 export PATH="$PATH:/opt/nvim-linux64/bin"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH=/home/ali/.opencode/bin:$PATH
-alias opencode='opencode --agent plan'
 
 alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 

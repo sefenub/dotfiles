@@ -18,57 +18,89 @@ local function copy_diagnostic()
 end
 
 return {
-  'neovim/nvim-lspconfig',
-  event = { 'BufReadPre', 'BufNewFile' },
-  cmd = { 'Mason', 'LspInfo' },
-  dependencies = {
-    'williamboman/mason.nvim',
-    'williamboman/mason-lspconfig.nvim',
-    'hrsh7th/nvim-cmp',
-  },
-  config = function()
-    local lspconfig = require('lspconfig')
-    local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-    require('mason').setup()
-    require('mason-lspconfig').setup({
-      ensure_installed = { 'lua_ls', 'pyright', 'ts_ls', 'rust_analyzer' },
-      automatic_installation = true,
-      handlers = {
-        function(server_name)
-          lspconfig[server_name].setup({
-            capabilities = capabilities,
-          })
-        end,
+    {
+      "benomahony/uv.nvim",
+      opts = {
+        picker_integration = true,
       },
-    })
+    },
+    {
+      'stevearc/conform.nvim',
+      opts = {
+        formatters_by_ft = {
+          python = { 'black' },
+          cpp = { 'clang_format' },
+          c = { 'clang_format' },
+          go = { 'goimports', 'gofumpt' },
+          javascript = { 'prettier' },
+          typescript = { 'prettier' },
+          javascriptreact = { 'prettier' },
+          typescriptreact = { 'prettier' },
+          json = { 'prettier' },
+          html = { 'prettier' },
+          css = { 'prettier' },
+        }
+      },
+      keys = {
+        { '<leader>cf', function() require('conform').format({ async = true }) end, desc = 'Format' },
+      },
+    },
+    {
+    'neovim/nvim-lspconfig',
+    event = { 'BufReadPre', 'BufNewFile' },
+    cmd = { 'Mason', 'LspInfo' },
+    dependencies = {
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+      'hrsh7th/nvim-cmp',
+      'WhoIsSethDaniel/mason-tool-installer.nvim'
+    },
+    config = function()
+      local lspconfig = require('lspconfig')
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-    -- Use regular keymaps in LspAttach (which-key will auto-detect from desc)
-    vim.api.nvim_create_autocmd('LspAttach', {
-      callback = function(args)
-        local opts = { buffer = args.buf }
+      require('mason').setup()
+      require('mason-tool-installer').setup({
+        ensure_installed = { 'autopep8', 'clang-format', 'goimports', 'gofumpt', 'prettier' }
+      })
+      require('mason-lspconfig').setup({
+        ensure_installed = { 'lua_ls', 'pyright', 'ts_ls', 'rust_analyzer', 'clangd', 'gopls' },
+        automatic_installation = true,
+        handlers = {
+          function(server_name)
+            lspconfig[server_name].setup({
+              capabilities = capabilities,
+            })
+          end,
+        },
+      })
 
-        -- Go-to mappings (no leader)
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, vim.tbl_extend('force', opts, { desc = 'Go to definition' }))
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, vim.tbl_extend('force', opts, { desc = 'Go to declaration' }))
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, vim.tbl_extend('force', opts, { desc = 'Go to implementation' }))
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, vim.tbl_extend('force', opts, { desc = 'References' }))
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, vim.tbl_extend('force', opts, { desc = 'Hover documentation' }))
+      -- Use regular keymaps in LspAttach
+      vim.api.nvim_create_autocmd('LspAttach', {
+        callback = function(args)
+          local opts = { buffer = args.buf }
 
-        -- Leader mappings
-        vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, vim.tbl_extend('force', opts, { desc = 'Rename' }))
-        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, vim.tbl_extend('force', opts, { desc = 'Code action' }))
-        vim.keymap.set('n', '<leader>cf', vim.lsp.buf.format, vim.tbl_extend('force', opts, { desc = 'Format' }))
+          -- Go-to mappings (no leader)
+          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, vim.tbl_extend('force', opts, { desc = 'Go to definition' }))
+          vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, vim.tbl_extend('force', opts, { desc = 'Go to declaration' }))
+          vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, vim.tbl_extend('force', opts, { desc = 'Go to implementation' }))
+          vim.keymap.set('n', 'gr', vim.lsp.buf.references, vim.tbl_extend('force', opts, { desc = 'References' }))
+          vim.keymap.set('n', 'K', vim.lsp.buf.hover, vim.tbl_extend('force', opts, { desc = 'Hover documentation' }))
 
-        -- Diagnostics
-        vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, vim.tbl_extend('force', opts, { desc = 'Show diagnostic' }))
-        vim.keymap.set('n', '<leader>cc', function()
-          vim.diagnostic.open_float(nil, { focus = false })
-          vim.schedule(copy_diagnostic)
-        end, vim.tbl_extend('force', opts, { desc = 'Copy diagnostic' }))
-        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, vim.tbl_extend('force', opts, { desc = 'Previous diagnostic' }))
-        vim.keymap.set('n', ']d', vim.diagnostic.goto_next, vim.tbl_extend('force', opts, { desc = 'Next diagnostic' }))
-      end,
-    })
-  end,
+          -- Leader mappings
+          vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, vim.tbl_extend('force', opts, { desc = 'Rename' }))
+          vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, vim.tbl_extend('force', opts, { desc = 'Code action' }))
+
+          -- Diagnostics
+          vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, vim.tbl_extend('force', opts, { desc = 'Show diagnostic' }))
+          vim.keymap.set('n', '<leader>cc', function()
+            vim.diagnostic.open_float(nil, { focus = false })
+            vim.schedule(copy_diagnostic)
+          end, vim.tbl_extend('force', opts, { desc = 'Copy diagnostic' }))
+          vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, vim.tbl_extend('force', opts, { desc = 'Previous diagnostic' }))
+          vim.keymap.set('n', ']d', vim.diagnostic.goto_next, vim.tbl_extend('force', opts, { desc = 'Next diagnostic' }))
+        end,
+      })
+    end,
+  }
 }
