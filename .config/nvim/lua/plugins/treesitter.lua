@@ -2,7 +2,7 @@ return {
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    event = { 'BufReadPost', 'BufNewFile' },
+    lazy = false,
     config = function()
       require('nvim-treesitter').setup({
         ensure_installed = { 'lua' },

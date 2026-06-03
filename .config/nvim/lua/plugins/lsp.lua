@@ -29,6 +29,7 @@ return {
       opts = {
         formatters_by_ft = {
           python = { 'black' },
+          sql = { "sqlfluff" },
           cpp = { 'clang_format' },
           c = { 'clang_format' },
           go = { 'goimports', 'gofumpt' },
@@ -39,7 +40,14 @@ return {
           json = { 'prettier' },
           html = { 'prettier' },
           css = { 'prettier' },
-        }
+        },
+        formatters = {
+          sqlfluff = {
+            command = "sqlfluff",
+            args = { "format", "--dialect", "oracle", "--disable-progress-bar", "-" },
+            stdin = true,
+          },
+        },
       },
       keys = {
         { '<leader>cf', function() require('conform').format({ async = true }) end, desc = 'Format' },
@@ -47,7 +55,7 @@ return {
     },
     {
     'neovim/nvim-lspconfig',
-    event = { 'BufReadPre', 'BufNewFile' },
+    lazy = false,
     cmd = { 'Mason', 'LspInfo' },
     dependencies = {
       'williamboman/mason.nvim',
@@ -61,10 +69,18 @@ return {
 
       require('mason').setup()
       require('mason-tool-installer').setup({
-        ensure_installed = { 'autopep8', 'clang-format', 'goimports', 'gofumpt', 'prettier' }
+        ensure_installed = { 'autopep8', 'clang-format', 'goimports', 'gofumpt', 'prettier', 'tflint' }
       })
       require('mason-lspconfig').setup({
-        ensure_installed = { 'lua_ls', 'pyright', 'ts_ls', 'rust_analyzer', 'clangd', 'gopls' },
+        ensure_installed = {
+          'lua_ls',
+          'pyright',
+          'ts_ls',
+          'rust_analyzer',
+          'clangd',
+          'gopls',
+          'terraformls'
+        },
         automatic_installation = true,
         handlers = {
           function(server_name)

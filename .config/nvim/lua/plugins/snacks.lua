@@ -9,7 +9,7 @@ return {
     explorer = { enabled = true },
 
     -- Dashboard/start screen
-    dashboard = { enabled = true },
+    dashboard = { enabled = false },
 
     -- Better vim.ui.input
     input = { enabled = true },
