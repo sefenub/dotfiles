@@ -77,6 +77,8 @@ M.autocmds = function()
     end,
   })
 
+  -- Terraform template files: use helm grammar for mixed YAML+directive highlighting
+  vim.filetype.add({ extension = { tpl = 'helm' } })
 end
 
 -- Run all

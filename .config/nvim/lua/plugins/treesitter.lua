@@ -5,7 +5,7 @@ return {
     lazy = false,
     config = function()
       require('nvim-treesitter').setup({
-        ensure_installed = { 'lua' },
+        ensure_installed = { 'lua', 'helm' },
         auto_install = true,
         highlight = { enable = true },
         indent = { enable = true },

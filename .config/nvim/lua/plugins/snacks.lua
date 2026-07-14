@@ -23,6 +23,9 @@ return {
     -- Smooth scrolling
     scroll = { enabled = true },
 
+    -- Disable image rendering (causes Sixel artifacts in Windows Terminal + tmux)
+    image = { enabled = false },
+
     -- Status column with git signs, line numbers, etc.
     statuscolumn = {
       enabled = true,

@@ -69,7 +69,7 @@ return {
 
       require('mason').setup()
       require('mason-tool-installer').setup({
-        ensure_installed = { 'autopep8', 'clang-format', 'goimports', 'gofumpt', 'prettier', 'tflint' }
+        ensure_installed = { 'goimports', 'gofumpt', 'prettier', 'tflint' }
       })
       require('mason-lspconfig').setup({
         ensure_installed = {
